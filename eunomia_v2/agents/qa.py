@@ -159,6 +159,7 @@ def parse_test_output(output: str) -> QAResult:
     - pytest: "=== 3 passed, 1 failed in 0.5s ==="
     - vitest: "Tests  3 passed | 1 failed (4)"
     - jest: "Tests:  2 passed, 1 failed, 3 total"
+    - Node.js TAP: "# tests 8 / # pass 8 / # fail 0"
     - Generic: looks for passed/failed/total patterns
 
     Also parses our structured "TEST RESULTS:" format from the agent.
@@ -237,6 +238,22 @@ def parse_test_output(output: str) -> QAResult:
             if t:
                 total_count = int(t.group(1))
             skipped_count = total_count - passed_count - failed_count
+
+    # Try Node.js TAP format: "# tests 8 / # pass 8 / # fail 0"
+    if not framework:
+        tap_tests = re.search(r"#\s+tests\s+(\d+)", output)
+        tap_pass = re.search(r"#\s+pass\s+(\d+)", output)
+        tap_fail = re.search(r"#\s+fail\s+(\d+)", output)
+        if tap_tests and (tap_pass or tap_fail):
+            framework = "node:test"
+            total_count = int(tap_tests.group(1))
+            if tap_pass:
+                passed_count = int(tap_pass.group(1))
+            if tap_fail:
+                failed_count = int(tap_fail.group(1))
+            tap_skip = re.search(r"#\s+skipped\s+(\d+)", output)
+            if tap_skip:
+                skipped_count = int(tap_skip.group(1))
 
     # Generic fallback: look for any passed/failed patterns
     if not framework:
