@@ -1,0 +1,260 @@
+# Product Requirements Document Template
+# IDG-011: PRD Template
+
+id: prd-standard-v1
+name: Standard PRD Template
+doc_type: prd
+description: >
+  Standard template for Product Requirements Documents.
+  Includes vision, goals, requirements, NFRs, milestones, and constraints.
+version: "1.0.0"
+
+required_context:
+  - name: product_name
+    description: Name of the product being documented
+    required: true
+    context_type: string
+
+  - name: product_vision
+    description: High-level vision statement for the product
+    required: true
+    context_type: string
+
+  - name: target_users
+    description: Description of target user personas
+    required: false
+    context_type: string
+    default_value: "General users"
+
+  - name: existing_requirements
+    description: List of existing requirements if any
+    required: false
+    context_type: list
+
+  - name: stakeholders
+    description: List of project stakeholders
+    required: false
+    context_type: list
+
+output_formats:
+  - markdown
+  - html
+  - pdf
+  - docx
+
+default_format: markdown
+
+max_iterations: 3
+quality_threshold: 0.85
+
+style_guide: >
+  Use clear, concise language. Requirements should use "shall" for mandatory items
+  and "should" for recommended items. Each requirement must be testable and
+  unambiguous. Use active voice.
+
+sections:
+  - id: overview
+    title: Overview
+    level: 2
+    description: High-level overview of the product and its purpose
+    required: true
+    min_words: 50
+    max_words: 300
+    context_keys:
+      - product_name
+      - product_vision
+    prompt: >
+      Write a clear, concise overview of {{product_name}} based on the vision:
+      {{product_vision}}. Include the product's primary purpose and value proposition.
+    subsections:
+      - id: overview-purpose
+        title: Purpose
+        level: 3
+        description: Why this document exists and what it covers
+        required: true
+        min_words: 30
+        max_words: 100
+        prompt: >
+          Describe the purpose of this PRD for {{product_name}}.
+
+      - id: overview-scope
+        title: Scope
+        level: 3
+        description: What is in and out of scope
+        required: true
+        min_words: 30
+        max_words: 150
+        prompt: >
+          Define the scope of {{product_name}}, including what is in and out of scope.
+
+  - id: vision-goals
+    title: Vision & Goals
+    level: 2
+    description: Product vision statement and measurable goals
+    required: true
+    min_words: 100
+    max_words: 500
+    context_keys:
+      - product_vision
+    prompt: >
+      Expand on the product vision: {{product_vision}}. Include 3-5 measurable
+      goals with success criteria.
+    subsections:
+      - id: vision-statement
+        title: Vision Statement
+        level: 3
+        description: The long-term vision for the product
+        required: true
+        prompt: >
+          Write a compelling vision statement for {{product_name}}.
+
+      - id: goals
+        title: Goals
+        level: 3
+        description: Measurable product goals
+        required: true
+        prompt: >
+          List 3-5 measurable goals for {{product_name}} with clear success criteria.
+
+  - id: user-personas
+    title: User Personas
+    level: 2
+    description: Target user personas and their needs
+    required: true
+    min_words: 100
+    context_keys:
+      - target_users
+    prompt: >
+      Describe the target users: {{target_users}}. Create 2-3 user personas with
+      their goals, pain points, and how the product helps them.
+
+  - id: functional-requirements
+    title: Functional Requirements
+    level: 2
+    description: Detailed functional requirements with acceptance criteria
+    required: true
+    context_keys:
+      - existing_requirements
+    prompt: >
+      Generate functional requirements for {{product_name}}. Each requirement should:
+      - Have a unique ID (REQ-XXX)
+      - Include a clear description using "shall" language
+      - List testable acceptance criteria
+      - Specify priority (Critical, High, Medium, Low)
+      - Note any dependencies
+    validation_rules:
+      - has_requirement_ids
+      - has_acceptance_criteria
+      - has_priorities
+
+  - id: non-functional-requirements
+    title: Non-Functional Requirements
+    level: 2
+    description: Performance, security, scalability, and other NFRs
+    required: true
+    prompt: >
+      Generate non-functional requirements for {{product_name}} covering:
+      - Performance (response times, throughput)
+      - Availability (uptime SLAs)
+      - Security (authentication, authorization, compliance)
+      - Scalability (user capacity, data volume)
+      Each NFR should have ID (NFR-XXX), measurable criteria, and verification method.
+    subsections:
+      - id: nfr-performance
+        title: Performance Requirements
+        level: 3
+        description: Performance-related requirements
+        required: true
+        prompt: Define measurable performance requirements.
+
+      - id: nfr-security
+        title: Security Requirements
+        level: 3
+        description: Security-related requirements
+        required: true
+        prompt: Define security requirements including authentication, authorization, and compliance.
+
+      - id: nfr-availability
+        title: Availability Requirements
+        level: 3
+        description: Availability and reliability requirements
+        required: true
+        prompt: Define availability SLAs and reliability requirements.
+
+      - id: nfr-scalability
+        title: Scalability Requirements
+        level: 3
+        description: Scalability requirements
+        required: true
+        prompt: Define scalability requirements for users and data.
+
+  - id: milestones
+    title: Milestones & Timeline
+    level: 2
+    description: Project milestones and delivery timeline
+    required: true
+    prompt: >
+      Define key milestones for {{product_name}} development. Include:
+      - Milestone name and description
+      - Key deliverables
+      - Success criteria
+      Do NOT include specific dates (those are determined by project management).
+
+  - id: constraints
+    title: Constraints & Assumptions
+    level: 2
+    description: Technical, business, and resource constraints
+    required: true
+    prompt: >
+      List constraints and assumptions for {{product_name}}:
+      - Technical constraints (platform, technology stack)
+      - Business constraints (budget, timeline)
+      - Resource constraints (team, skills)
+      - Assumptions being made
+
+  - id: dependencies
+    title: Dependencies
+    level: 2
+    description: External and internal dependencies
+    required: false
+    prompt: >
+      Identify dependencies for {{product_name}}:
+      - External systems and APIs
+      - Third-party services
+      - Internal team dependencies
+      - Data dependencies
+
+  - id: risks
+    title: Risks & Mitigations
+    level: 2
+    description: Identified risks and mitigation strategies
+    required: true
+    prompt: >
+      Identify key risks for {{product_name}} with mitigation strategies:
+      - Risk description
+      - Probability (High/Medium/Low)
+      - Impact (High/Medium/Low)
+      - Mitigation strategy
+
+  - id: glossary
+    title: Glossary
+    level: 2
+    description: Definition of terms used in this document
+    required: false
+    prompt: >
+      Create a glossary of domain-specific terms used in this PRD.
+      Include abbreviations and technical terms that readers may need defined.
+
+  - id: appendix
+    title: Appendix
+    level: 2
+    description: Additional reference material
+    required: false
+    prompt: >
+      List any additional reference materials, diagrams, or supporting documents.
+
+metadata_defaults:
+  status: draft
+  tags:
+    - requirements
+    - product

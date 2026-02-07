@@ -1,0 +1,295 @@
+# Technical Design Document Template
+# IDG-012: TDD Template
+
+id: tdd-standard-v1
+name: Standard Technical Design Document Template
+doc_type: tdd
+description: >
+  Standard template for Technical Design Documents.
+  Covers architecture, components, APIs, data models, security, and testing.
+version: "1.0.0"
+
+required_context:
+  - name: system_name
+    description: Name of the system being designed
+    required: true
+    context_type: string
+
+  - name: requirements
+    description: Requirements this design addresses
+    required: true
+    context_type: list
+
+  - name: tech_stack
+    description: Technology stack (languages, frameworks, databases)
+    required: true
+    context_type: string
+
+  - name: existing_systems
+    description: Existing systems this integrates with
+    required: false
+    context_type: list
+
+output_formats:
+  - markdown
+  - html
+  - pdf
+
+default_format: markdown
+
+max_iterations: 3
+quality_threshold: 0.85
+
+style_guide: >
+  Use clear, precise technical language. Include diagrams where helpful.
+  Code examples should be correct and follow best practices.
+  Design decisions should be justified with rationale.
+
+sections:
+  - id: overview
+    title: Overview
+    level: 2
+    description: High-level system overview
+    required: true
+    min_words: 100
+    context_keys:
+      - system_name
+      - requirements
+    prompt: >
+      Provide a high-level overview of {{system_name}}. Summarize:
+      - What the system does
+      - Key requirements it addresses
+      - Intended audience for this document
+    subsections:
+      - id: overview-purpose
+        title: Purpose
+        level: 3
+        description: Purpose of this design document
+        required: true
+
+      - id: overview-scope
+        title: Scope
+        level: 3
+        description: Scope of the design
+        required: true
+
+      - id: overview-references
+        title: References
+        level: 3
+        description: Related documents and resources
+        required: false
+
+  - id: architecture
+    title: System Architecture
+    level: 2
+    description: High-level architecture and design decisions
+    required: true
+    context_keys:
+      - tech_stack
+    prompt: >
+      Describe the system architecture for {{system_name}} using {{tech_stack}}.
+      Include:
+      - Architecture style (monolith, microservices, serverless)
+      - Key architectural decisions with rationale
+      - High-level component diagram (as ASCII or describe)
+    subsections:
+      - id: arch-overview
+        title: Architecture Overview
+        level: 3
+        description: High-level architecture diagram and explanation
+        required: true
+
+      - id: arch-decisions
+        title: Key Design Decisions
+        level: 3
+        description: Major design decisions and rationale
+        required: true
+
+      - id: arch-patterns
+        title: Design Patterns
+        level: 3
+        description: Design patterns used and why
+        required: true
+
+  - id: components
+    title: Component Design
+    level: 2
+    description: Detailed component breakdown
+    required: true
+    prompt: >
+      Detail each major component of {{system_name}}:
+      - Component name and responsibility
+      - Interfaces (inputs/outputs)
+      - Dependencies
+      - Key classes/modules
+
+  - id: data-model
+    title: Data Model
+    level: 2
+    description: Database schema and data flow
+    required: true
+    prompt: >
+      Define the data model for {{system_name}}:
+      - Entity relationship diagram (describe or ASCII)
+      - Table/collection definitions
+      - Key relationships and constraints
+      - Data migration considerations
+    subsections:
+      - id: data-entities
+        title: Entities
+        level: 3
+        description: Core data entities
+        required: true
+
+      - id: data-relationships
+        title: Relationships
+        level: 3
+        description: Entity relationships
+        required: true
+
+      - id: data-indexes
+        title: Indexes & Performance
+        level: 3
+        description: Index strategy and optimization
+        required: false
+
+  - id: apis
+    title: API Design
+    level: 2
+    description: API endpoints and contracts
+    required: true
+    prompt: >
+      Define APIs for {{system_name}}:
+      - API style (REST, GraphQL, gRPC)
+      - Endpoint definitions with methods
+      - Request/response schemas
+      - Authentication requirements
+      - Error handling patterns
+    subsections:
+      - id: api-endpoints
+        title: Endpoints
+        level: 3
+        description: API endpoint definitions
+        required: true
+
+      - id: api-schemas
+        title: Request/Response Schemas
+        level: 3
+        description: Data schemas for API operations
+        required: true
+
+      - id: api-errors
+        title: Error Handling
+        level: 3
+        description: Error codes and handling
+        required: true
+
+  - id: security
+    title: Security Design
+    level: 2
+    description: Security considerations and controls
+    required: true
+    prompt: >
+      Define security design for {{system_name}}:
+      - Authentication mechanism
+      - Authorization model (RBAC, ABAC)
+      - Data encryption (at rest, in transit)
+      - Security boundaries
+      - Threat considerations
+    subsections:
+      - id: security-authn
+        title: Authentication
+        level: 3
+        description: Authentication mechanism
+        required: true
+
+      - id: security-authz
+        title: Authorization
+        level: 3
+        description: Authorization model
+        required: true
+
+      - id: security-encryption
+        title: Data Protection
+        level: 3
+        description: Encryption and data protection
+        required: true
+
+  - id: scalability
+    title: Scalability & Performance
+    level: 2
+    description: Scalability approach and performance targets
+    required: true
+    prompt: >
+      Define scalability approach for {{system_name}}:
+      - Horizontal vs vertical scaling strategy
+      - Caching approach
+      - Load balancing
+      - Performance targets and bottlenecks
+
+  - id: reliability
+    title: Reliability & Fault Tolerance
+    level: 2
+    description: Reliability patterns and failure handling
+    required: true
+    prompt: >
+      Define reliability patterns for {{system_name}}:
+      - Failure modes and handling
+      - Retry policies
+      - Circuit breakers
+      - Backup and recovery
+
+  - id: observability
+    title: Observability
+    level: 2
+    description: Logging, metrics, and tracing
+    required: true
+    prompt: >
+      Define observability for {{system_name}}:
+      - Logging strategy and levels
+      - Key metrics to collect
+      - Distributed tracing approach
+      - Alerting thresholds
+
+  - id: testing
+    title: Testing Strategy
+    level: 2
+    description: Testing approach and coverage
+    required: true
+    prompt: >
+      Define testing strategy for {{system_name}}:
+      - Unit testing approach
+      - Integration testing approach
+      - E2E testing approach
+      - Performance testing
+      - Coverage targets
+
+  - id: deployment
+    title: Deployment Architecture
+    level: 2
+    description: Deployment model and infrastructure
+    required: true
+    prompt: >
+      Define deployment architecture for {{system_name}}:
+      - Deployment environment (cloud, on-prem)
+      - Container strategy
+      - CI/CD pipeline
+      - Infrastructure as code approach
+
+  - id: future
+    title: Future Considerations
+    level: 2
+    description: Known limitations and future enhancements
+    required: false
+    prompt: >
+      Document future considerations:
+      - Known technical debt
+      - Planned improvements
+      - Scalability headroom
+
+metadata_defaults:
+  status: draft
+  tags:
+    - technical
+    - design
+    - architecture

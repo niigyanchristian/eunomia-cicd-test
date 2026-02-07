@@ -1,0 +1,314 @@
+# Operations Runbook Template
+# IDG-016: Runbook Template
+
+id: runbook-standard-v1
+name: Standard Operations Runbook Template
+doc_type: runbook
+description: >
+  Standard template for Operations Runbooks.
+  Covers procedures, troubleshooting, rollback, and contacts.
+version: "1.0.0"
+
+required_context:
+  - name: system_name
+    description: Name of the system/service
+    required: true
+    context_type: string
+
+  - name: system_description
+    description: Brief description of what the system does
+    required: true
+    context_type: string
+
+  - name: criticality
+    description: System criticality (critical, high, medium, low)
+    required: false
+    context_type: string
+    default_value: high
+
+output_formats:
+  - markdown
+  - html
+  - pdf
+
+default_format: markdown
+
+max_iterations: 2
+quality_threshold: 0.85
+
+style_guide: >
+  Be extremely clear and step-by-step. Assume the reader is stressed.
+  Include exact commands. Highlight warnings and critical steps.
+  Provide expected outputs for verification.
+
+sections:
+  - id: overview
+    title: Overview
+    level: 2
+    description: System overview for operators
+    required: true
+    context_keys:
+      - system_name
+      - system_description
+      - criticality
+    prompt: >
+      Provide an operational overview of {{system_name}}:
+      {{system_description}}
+      Criticality: {{criticality}}
+
+      Include:
+      - What the system does
+      - Why it matters (business impact)
+      - Dependencies
+    subsections:
+      - id: overview-description
+        title: System Description
+        level: 3
+        description: What the system does
+        required: true
+
+      - id: overview-architecture
+        title: Architecture Overview
+        level: 3
+        description: High-level architecture for operators
+        required: true
+
+      - id: overview-dependencies
+        title: Dependencies
+        level: 3
+        description: Upstream and downstream dependencies
+        required: true
+
+  - id: access
+    title: Access & Credentials
+    level: 2
+    description: How to access the system
+    required: true
+    prompt: >
+      Document access information for {{system_name}}:
+      - Console/dashboard URLs
+      - SSH/remote access
+      - Required credentials (link to secrets manager)
+      - VPN requirements
+
+      DO NOT include actual credentials - reference secret stores.
+
+  - id: monitoring
+    title: Monitoring & Alerting
+    level: 2
+    description: How to monitor system health
+    required: true
+    prompt: >
+      Document monitoring for {{system_name}}:
+      - Dashboard links
+      - Key metrics to watch
+      - Alert definitions
+      - Escalation thresholds
+    subsections:
+      - id: monitoring-dashboards
+        title: Dashboards
+        level: 3
+        description: Monitoring dashboards
+        required: true
+
+      - id: monitoring-metrics
+        title: Key Metrics
+        level: 3
+        description: Important metrics and thresholds
+        required: true
+
+      - id: monitoring-alerts
+        title: Alerts
+        level: 3
+        description: Alert definitions and meanings
+        required: true
+
+  - id: procedures
+    title: Standard Procedures
+    level: 2
+    description: Common operational procedures
+    required: true
+    prompt: >
+      Document standard operational procedures for {{system_name}}:
+      - Starting the service
+      - Stopping the service
+      - Restarting the service
+      - Scaling up/down
+      - Deploying updates
+
+      Include exact commands and expected outputs.
+    subsections:
+      - id: proc-start
+        title: Start Procedure
+        level: 3
+        description: How to start the service
+        required: true
+
+      - id: proc-stop
+        title: Stop Procedure
+        level: 3
+        description: How to stop the service
+        required: true
+
+      - id: proc-restart
+        title: Restart Procedure
+        level: 3
+        description: How to restart the service
+        required: true
+
+      - id: proc-deploy
+        title: Deployment Procedure
+        level: 3
+        description: How to deploy updates
+        required: true
+
+      - id: proc-scale
+        title: Scaling Procedure
+        level: 3
+        description: How to scale the service
+        required: false
+
+  - id: troubleshooting
+    title: Troubleshooting
+    level: 2
+    description: Common issues and solutions
+    required: true
+    prompt: >
+      Document troubleshooting for {{system_name}}:
+
+      For each common issue:
+      - Symptoms (what you'll see)
+      - Probable causes
+      - Diagnostic steps
+      - Resolution steps
+      - Verification
+    subsections:
+      - id: trouble-connectivity
+        title: Connectivity Issues
+        level: 3
+        description: Network/connectivity problems
+        required: true
+
+      - id: trouble-performance
+        title: Performance Issues
+        level: 3
+        description: Slow response, high latency
+        required: true
+
+      - id: trouble-errors
+        title: Common Errors
+        level: 3
+        description: Error codes and meanings
+        required: true
+
+      - id: trouble-resource
+        title: Resource Issues
+        level: 3
+        description: CPU, memory, disk problems
+        required: true
+
+  - id: rollback
+    title: Rollback Procedures
+    level: 2
+    description: How to rollback changes
+    required: true
+    prompt: >
+      Document rollback procedures for {{system_name}}:
+
+      - When to rollback (decision criteria)
+      - Pre-rollback checklist
+      - Rollback steps
+      - Post-rollback verification
+      - Communication requirements
+    subsections:
+      - id: rollback-criteria
+        title: Rollback Criteria
+        level: 3
+        description: When to decide to rollback
+        required: true
+
+      - id: rollback-steps
+        title: Rollback Steps
+        level: 3
+        description: Step-by-step rollback procedure
+        required: true
+
+      - id: rollback-verification
+        title: Verification
+        level: 3
+        description: How to verify rollback success
+        required: true
+
+  - id: disaster-recovery
+    title: Disaster Recovery
+    level: 2
+    description: Recovery from major failures
+    required: true
+    prompt: >
+      Document disaster recovery for {{system_name}}:
+      - Backup locations and frequency
+      - RTO and RPO targets
+      - Recovery procedures
+      - Data restoration steps
+
+  - id: maintenance
+    title: Maintenance Procedures
+    level: 2
+    description: Regular maintenance tasks
+    required: true
+    prompt: >
+      Document maintenance procedures for {{system_name}}:
+      - Log rotation
+      - Disk cleanup
+      - Certificate renewal
+      - Dependency updates
+      - Health checks
+
+  - id: contacts
+    title: Contacts & Escalation
+    level: 2
+    description: Who to contact for issues
+    required: true
+    prompt: >
+      Document contact information:
+      - Primary on-call
+      - Secondary on-call
+      - Team leads
+      - Vendor support
+      - Escalation path
+
+      Include contact methods and response time expectations.
+    subsections:
+      - id: contacts-oncall
+        title: On-Call
+        level: 3
+        description: On-call rotation and contacts
+        required: true
+
+      - id: contacts-escalation
+        title: Escalation Path
+        level: 3
+        description: When and how to escalate
+        required: true
+
+      - id: contacts-vendor
+        title: Vendor Support
+        level: 3
+        description: Vendor support contacts
+        required: false
+
+  - id: changelog
+    title: Runbook Changelog
+    level: 2
+    description: History of runbook updates
+    required: true
+    prompt: >
+      Create a changelog section for tracking runbook updates.
+      Include version, date, author, and changes made.
+
+metadata_defaults:
+  status: draft
+  tags:
+    - operations
+    - runbook
+    - devops

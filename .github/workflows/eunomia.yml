@@ -1,0 +1,45 @@
+name: Eunomia Pipeline
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  eunomia:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Eunomia V2
+        run: pip install .
+
+      - name: Run Eunomia pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          eunomia-v2 run \
+            --project-path ./output \
+            --prd PRD.md \
+            --model "anthropic:claude-haiku-3-5-20241022" \
+            --max-retries 1 \
+            --ci \
+            --no-persist
+
+      - name: Show generated files
+        if: always()
+        run: find ./output -type f 2>/dev/null || echo "No output files"
+
+      - name: Upload output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eunomia-output
+          path: output/
+          if-no-files-found: ignore

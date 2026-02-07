@@ -1,0 +1,48 @@
+pipeline {
+    agent {
+        docker {
+            image '{{docker_image}}'
+        }
+    }
+
+    stages {
+        stage('Install') {
+            steps {
+                sh '{{install_command}}'
+            }
+        }
+
+        stage('Test') {
+            parallel {
+                stage('Unit Tests') {
+                    steps {
+                        sh '{{test_command}}'
+                    }
+                }
+                stage('Lint') {
+                    steps {
+                        sh '{{lint_command}}'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh 'echo "Deploy to {{deploy_target}}"'
+            }
+        }
+    }
+
+    post {
+        always {
+            junit '**/report.xml'
+        }
+        failure {
+            echo 'Build failed — check test output above.'
+        }
+    }
+}

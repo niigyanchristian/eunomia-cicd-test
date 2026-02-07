@@ -1,0 +1,200 @@
+# README Template
+# IDG-014: README Template
+
+id: readme-standard-v1
+name: Standard README Template
+doc_type: readme
+description: >
+  Standard template for project README files.
+  Covers overview, installation, usage, API, contributing, and license.
+version: "1.0.0"
+
+required_context:
+  - name: project_name
+    description: Name of the project
+    required: true
+    context_type: string
+
+  - name: project_description
+    description: Brief description of the project
+    required: true
+    context_type: string
+
+  - name: tech_stack
+    description: Technology stack used
+    required: false
+    context_type: string
+
+  - name: license_type
+    description: License type (MIT, Apache-2.0, etc.)
+    required: false
+    context_type: string
+    default_value: MIT
+
+output_formats:
+  - markdown
+
+default_format: markdown
+
+max_iterations: 2
+quality_threshold: 0.80
+
+style_guide: >
+  Keep it concise and scannable. Use badges for status.
+  Include code examples that actually work.
+  Make the getting started path as short as possible.
+
+sections:
+  - id: title
+    title: "{{project_name}}"
+    level: 1
+    description: Project title with badges
+    required: true
+    context_keys:
+      - project_name
+    prompt: >
+      Create a title section with:
+      - Project name
+      - Brief tagline
+      - Status badges (build, coverage, license, version)
+
+  - id: overview
+    title: Overview
+    level: 2
+    description: What is this project
+    required: true
+    min_words: 30
+    max_words: 150
+    context_keys:
+      - project_description
+    prompt: >
+      Write a clear overview of {{project_name}}:
+      {{project_description}}
+
+      Answer: What is it? Who is it for? Why use it?
+
+  - id: features
+    title: Features
+    level: 2
+    description: Key features list
+    required: true
+    prompt: >
+      List key features of {{project_name}} as bullet points.
+      Focus on user benefits, not technical details.
+
+  - id: quickstart
+    title: Quick Start
+    level: 2
+    description: Fastest way to get started
+    required: true
+    min_words: 30
+    context_keys:
+      - tech_stack
+    prompt: >
+      Provide the absolute fastest way to try {{project_name}}.
+      Should be 3 steps or less. Include actual commands.
+
+  - id: installation
+    title: Installation
+    level: 2
+    description: How to install
+    required: true
+    context_keys:
+      - tech_stack
+    prompt: >
+      Document installation for {{project_name}} using {{tech_stack}}.
+      Include:
+      - Prerequisites
+      - Package manager commands
+      - Verification steps
+    subsections:
+      - id: install-prereqs
+        title: Prerequisites
+        level: 3
+        description: Required dependencies
+        required: true
+
+      - id: install-steps
+        title: Installation Steps
+        level: 3
+        description: Step-by-step installation
+        required: true
+
+  - id: usage
+    title: Usage
+    level: 2
+    description: How to use the project
+    required: true
+    prompt: >
+      Document basic usage of {{project_name}} with examples.
+      Include:
+      - Basic example
+      - Common use cases
+      - Configuration options
+    subsections:
+      - id: usage-basic
+        title: Basic Usage
+        level: 3
+        description: Simple usage example
+        required: true
+
+      - id: usage-advanced
+        title: Advanced Usage
+        level: 3
+        description: More complex examples
+        required: false
+
+  - id: api
+    title: API Reference
+    level: 2
+    description: API documentation or link
+    required: false
+    prompt: >
+      Provide API reference for {{project_name}}.
+      Either document key APIs here or link to full docs.
+
+  - id: configuration
+    title: Configuration
+    level: 2
+    description: Configuration options
+    required: false
+    prompt: >
+      Document configuration options for {{project_name}}.
+      Include environment variables, config files, and defaults.
+
+  - id: contributing
+    title: Contributing
+    level: 2
+    description: How to contribute
+    required: true
+    prompt: >
+      Explain how to contribute to {{project_name}}:
+      - Development setup
+      - Code style
+      - Pull request process
+      - Issue reporting
+
+  - id: license
+    title: License
+    level: 2
+    description: License information
+    required: true
+    context_keys:
+      - license_type
+    prompt: >
+      State the license: {{license_type}}
+      Include copyright holder if known.
+
+  - id: acknowledgments
+    title: Acknowledgments
+    level: 2
+    description: Credits and thanks
+    required: false
+    prompt: >
+      Acknowledge contributors, inspirations, and dependencies.
+
+metadata_defaults:
+  status: draft
+  tags:
+    - documentation
+    - readme

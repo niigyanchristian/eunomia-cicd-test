@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [{{branch_triggers}}]
+  pull_request:
+    branches: [{{branch_triggers}}]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        {{language}}-version: ["{{language_version}}"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up {{language_display}} ${{{{ matrix.{{language}}-version }}}}
+        uses: {{setup_action}}
+        with:
+          {{language}}-version: ${{{{ matrix.{{language}}-version }}}}
+
+      - name: Install dependencies
+        run: |
+          {{install_command}}
+
+      - name: Lint
+        if: ${{{{ always() }}}}
+        run: |
+          {{lint_command}}
+
+      - name: Run tests
+        run: |
+          {{test_command}}
+
+      - name: Upload coverage
+        if: ${{{{ always() }}}}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            coverage/
+            htmlcov/
+            coverage.xml

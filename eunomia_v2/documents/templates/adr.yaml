@@ -1,0 +1,228 @@
+# Architecture Decision Record Template
+# IDG-013: ADR Template
+
+id: adr-standard-v1
+name: Standard ADR Template
+doc_type: adr
+description: >
+  Standard template for Architecture Decision Records.
+  Follows the classic ADR structure: Context, Decision, Consequences.
+version: "1.0.0"
+
+required_context:
+  - name: decision_title
+    description: Title of the architecture decision
+    required: true
+    context_type: string
+
+  - name: problem_statement
+    description: The problem or question being addressed
+    required: true
+    context_type: string
+
+  - name: constraints
+    description: Constraints affecting the decision
+    required: false
+    context_type: list
+
+  - name: alternatives_considered
+    description: Alternative solutions that were evaluated
+    required: false
+    context_type: list
+
+output_formats:
+  - markdown
+  - html
+
+default_format: markdown
+
+max_iterations: 2
+quality_threshold: 0.80
+
+style_guide: >
+  Be concise but complete. Focus on the "why" not just the "what".
+  Document alternatives fairly. Acknowledge trade-offs honestly.
+  Use present tense for the decision.
+
+sections:
+  - id: status
+    title: Status
+    level: 2
+    description: Current status of this decision
+    required: true
+    min_words: 1
+    max_words: 20
+    prompt: >
+      Set the status for this ADR. Options:
+      - Proposed (under discussion)
+      - Accepted (decision made)
+      - Deprecated (superseded by another decision)
+      - Superseded (replaced by ADR-XXX)
+
+  - id: context
+    title: Context
+    level: 2
+    description: The context and problem statement
+    required: true
+    min_words: 50
+    max_words: 500
+    context_keys:
+      - problem_statement
+      - constraints
+    prompt: >
+      Describe the context for this decision:
+      Problem: {{problem_statement}}
+      {% if constraints %}Constraints: {{constraints}}{% endif %}
+
+      Include:
+      - What forces are at play
+      - What constraints exist
+      - Why a decision is needed now
+
+  - id: decision
+    title: Decision
+    level: 2
+    description: The decision that was made
+    required: true
+    min_words: 30
+    max_words: 300
+    context_keys:
+      - decision_title
+    prompt: >
+      State the decision clearly: {{decision_title}}
+
+      Use active voice: "We will..." or "The system will..."
+      Be specific about what was decided.
+      Include key implementation details.
+
+  - id: rationale
+    title: Rationale
+    level: 2
+    description: Why this decision was made
+    required: true
+    min_words: 50
+    max_words: 400
+    prompt: >
+      Explain why this decision was made:
+      - What factors were most important
+      - How it addresses the problem
+      - Why it was chosen over alternatives
+
+  - id: alternatives
+    title: Alternatives Considered
+    level: 2
+    description: Other options that were evaluated
+    required: true
+    context_keys:
+      - alternatives_considered
+    prompt: >
+      Document alternatives that were considered:
+      {% if alternatives_considered %}
+      Alternatives: {{alternatives_considered}}
+      {% endif %}
+
+      For each alternative:
+      - Brief description
+      - Pros and cons
+      - Why it was not chosen
+    subsections:
+      - id: alt-option-1
+        title: "Option 1"
+        level: 3
+        description: First alternative
+        required: false
+
+      - id: alt-option-2
+        title: "Option 2"
+        level: 3
+        description: Second alternative
+        required: false
+
+      - id: alt-option-3
+        title: "Option 3"
+        level: 3
+        description: Third alternative
+        required: false
+
+  - id: consequences
+    title: Consequences
+    level: 2
+    description: Positive and negative consequences of the decision
+    required: true
+    min_words: 50
+    max_words: 400
+    prompt: >
+      Document the consequences of this decision:
+
+      Positive:
+      - Benefits gained
+      - Problems solved
+      - Improvements enabled
+
+      Negative:
+      - Trade-offs accepted
+      - New constraints introduced
+      - Technical debt incurred
+
+      Neutral:
+      - Changes that are neither good nor bad
+    subsections:
+      - id: consequences-positive
+        title: Positive
+        level: 3
+        description: Benefits and improvements
+        required: true
+
+      - id: consequences-negative
+        title: Negative
+        level: 3
+        description: Trade-offs and costs
+        required: true
+
+      - id: consequences-neutral
+        title: Neutral
+        level: 3
+        description: Changes without clear positive/negative impact
+        required: false
+
+  - id: implementation
+    title: Implementation Notes
+    level: 2
+    description: How this decision will be implemented
+    required: false
+    min_words: 30
+    max_words: 300
+    prompt: >
+      Document implementation considerations:
+      - Key tasks required
+      - Timeline considerations
+      - Dependencies
+      - Migration steps if applicable
+
+  - id: related
+    title: Related Decisions
+    level: 2
+    description: Links to related ADRs
+    required: false
+    prompt: >
+      List related ADRs:
+      - ADRs that influenced this decision
+      - ADRs that are affected by this decision
+      - ADRs that supersede or are superseded by this
+
+  - id: references
+    title: References
+    level: 2
+    description: External references and resources
+    required: false
+    prompt: >
+      List external references:
+      - Documentation
+      - Articles or papers
+      - Tools or libraries mentioned
+
+metadata_defaults:
+  status: proposed
+  tags:
+    - architecture
+    - decision

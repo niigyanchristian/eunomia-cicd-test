@@ -1,0 +1,275 @@
+# Test Plan Template
+# IDG-015: Test Plan Template
+
+id: test-plan-standard-v1
+name: Standard Test Plan Template
+doc_type: test_plan
+description: >
+  Standard template for Test Plans.
+  Covers strategy, scope, test cases, environments, acceptance criteria.
+version: "1.0.0"
+
+required_context:
+  - name: project_name
+    description: Name of the project being tested
+    required: true
+    context_type: string
+
+  - name: requirements
+    description: Requirements to be tested
+    required: true
+    context_type: list
+
+  - name: test_environments
+    description: Available test environments
+    required: false
+    context_type: list
+
+output_formats:
+  - markdown
+  - html
+  - pdf
+
+default_format: markdown
+
+max_iterations: 3
+quality_threshold: 0.85
+
+style_guide: >
+  Be specific about test cases and expected results.
+  Link tests to requirements. Use tables for test cases.
+  Specify pass/fail criteria clearly.
+
+sections:
+  - id: overview
+    title: Overview
+    level: 2
+    description: Test plan overview
+    required: true
+    context_keys:
+      - project_name
+    prompt: >
+      Provide an overview of the test plan for {{project_name}}:
+      - Purpose of testing
+      - Testing objectives
+      - Document scope
+    subsections:
+      - id: overview-purpose
+        title: Purpose
+        level: 3
+        description: Why this test plan exists
+        required: true
+
+      - id: overview-scope
+        title: Scope
+        level: 3
+        description: What is and isn't covered
+        required: true
+
+  - id: strategy
+    title: Test Strategy
+    level: 2
+    description: Overall testing approach
+    required: true
+    prompt: >
+      Define the testing strategy for {{project_name}}:
+      - Testing levels (unit, integration, system, acceptance)
+      - Testing types (functional, performance, security)
+      - Automation approach
+      - Risk-based prioritization
+    subsections:
+      - id: strategy-levels
+        title: Testing Levels
+        level: 3
+        description: Unit, integration, system, acceptance
+        required: true
+
+      - id: strategy-types
+        title: Testing Types
+        level: 3
+        description: Functional, performance, security, etc.
+        required: true
+
+      - id: strategy-automation
+        title: Automation Strategy
+        level: 3
+        description: What will be automated and how
+        required: true
+
+  - id: requirements-coverage
+    title: Requirements Coverage
+    level: 2
+    description: Requirements to test mapping
+    required: true
+    context_keys:
+      - requirements
+    prompt: >
+      Map requirements to test coverage:
+      {{requirements}}
+
+      Create a traceability matrix showing:
+      - Requirement ID
+      - Test case IDs
+      - Coverage status
+
+  - id: test-cases
+    title: Test Cases
+    level: 2
+    description: Detailed test cases
+    required: true
+    prompt: >
+      Define test cases for {{project_name}}. Each case should have:
+      - Test Case ID (TC-XXX)
+      - Title
+      - Preconditions
+      - Steps
+      - Expected Results
+      - Priority
+      - Linked Requirement
+    subsections:
+      - id: tc-functional
+        title: Functional Test Cases
+        level: 3
+        description: Functional testing
+        required: true
+
+      - id: tc-integration
+        title: Integration Test Cases
+        level: 3
+        description: Integration testing
+        required: true
+
+      - id: tc-edge-cases
+        title: Edge Case Tests
+        level: 3
+        description: Boundary and edge conditions
+        required: true
+
+      - id: tc-negative
+        title: Negative Test Cases
+        level: 3
+        description: Error handling and invalid inputs
+        required: true
+
+  - id: environments
+    title: Test Environments
+    level: 2
+    description: Testing environment specifications
+    required: true
+    context_keys:
+      - test_environments
+    prompt: >
+      Define test environments:
+      {% if test_environments %}{{test_environments}}{% endif %}
+
+      Include:
+      - Environment name and purpose
+      - Configuration details
+      - Data requirements
+      - Access information
+
+  - id: test-data
+    title: Test Data
+    level: 2
+    description: Test data requirements
+    required: true
+    prompt: >
+      Define test data requirements:
+      - Data sets needed
+      - Data generation approach
+      - Data refresh/reset procedures
+      - Sensitive data handling
+
+  - id: entry-exit
+    title: Entry & Exit Criteria
+    level: 2
+    description: Criteria for starting and completing testing
+    required: true
+    prompt: >
+      Define entry and exit criteria:
+
+      Entry Criteria:
+      - Prerequisites before testing starts
+      - Required artifacts
+      - Environment readiness
+
+      Exit Criteria:
+      - Test completion metrics
+      - Defect closure rates
+      - Coverage thresholds
+    subsections:
+      - id: entry-criteria
+        title: Entry Criteria
+        level: 3
+        description: Prerequisites for testing
+        required: true
+
+      - id: exit-criteria
+        title: Exit Criteria
+        level: 3
+        description: Completion requirements
+        required: true
+
+  - id: defect-management
+    title: Defect Management
+    level: 2
+    description: How defects are tracked and managed
+    required: true
+    prompt: >
+      Define defect management process:
+      - Defect severity levels
+      - Priority definitions
+      - Workflow states
+      - Escalation procedures
+
+  - id: risks
+    title: Testing Risks
+    level: 2
+    description: Testing risks and mitigations
+    required: true
+    prompt: >
+      Identify testing risks:
+      - Risk description
+      - Probability and impact
+      - Mitigation strategy
+      - Contingency plan
+
+  - id: schedule
+    title: Test Schedule
+    level: 2
+    description: Testing timeline and milestones
+    required: false
+    prompt: >
+      Outline the testing schedule:
+      - Testing phases
+      - Key milestones
+      - Dependencies
+      Note: Specific dates should be managed in project tracking.
+
+  - id: resources
+    title: Resources & Responsibilities
+    level: 2
+    description: Team roles and tools
+    required: true
+    prompt: >
+      Define testing resources:
+      - Team roles and responsibilities
+      - Required tools
+      - Training needs
+
+  - id: approvals
+    title: Approvals
+    level: 2
+    description: Sign-off requirements
+    required: true
+    prompt: >
+      List required approvals:
+      - Approver roles
+      - Approval criteria
+      - Sign-off format
+
+metadata_defaults:
+  status: draft
+  tags:
+    - testing
+    - quality
